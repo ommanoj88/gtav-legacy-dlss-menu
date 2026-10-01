@@ -1,0 +1,7 @@
+# Local, machine-specific settings (absolute paths on your PC)
+menu/settings.json
+
+# Editor/OS cruft
+.DS_Store
+Thumbs.db
+*.bak

@@ -61,9 +61,10 @@ things that get you genuinely closer to "DLSS-like" results than ReShade alone.
    - When asked which shaders to install, tick **"Standard effects"** — this includes
      `CAS.fx` (AMD's Contrast Adaptive Sharpening), which is what gives the clarity boost.
 2. **Clone this repo** onto the same PC (or just copy the `menu` folder).
-3. **Run the menu**: right-click [`menu/dlss-menu.ps1`](menu/dlss-menu.ps1) → *Run with
-   PowerShell* (or `powershell -ExecutionPolicy Bypass -File menu\dlss-menu.ps1` from a
-   terminal).
+3. **Run the menu**: double-click [`menu/Start-Menu.bat`](menu/Start-Menu.bat).
+   - Don't use Explorer's "Run with PowerShell" on the `.ps1` directly — it launches
+     non-interactively and the window closes the instant it hits a prompt (see
+     Troubleshooting). The `.bat` forces a proper interactive window.
 4. Choose **[1] Locate GTA V install** — it checks common install paths, or you can paste
    your own.
 5. Choose **[2] Backup original files** before touching anything else.
@@ -91,6 +92,11 @@ Rockstar could do that, by shipping an NGX-integrated build the way they did for
 
 ## Troubleshooting
 
+- **The window opens and closes in about a second** — this happens if you launched the
+  `.ps1` via Explorer's "Run with PowerShell" instead of `menu/Start-Menu.bat`. That verb
+  runs non-interactively and/or Windows blocked the script because it was downloaded from
+  the internet, so it errors out on the first prompt and the window closes with it. Use
+  `Start-Menu.bat` instead — it opens a normal window and stays open.
 - **Overlay doesn't open (Home key does nothing)** — confirm you picked the right
   rendering API during ReShade install.
 - **Game won't launch / black screen** — run menu option **[4] Restore original files**,

@@ -51,9 +51,17 @@ function Locate-Game {
         }
     }
     if (-not $Settings.GamePath -or $choice -eq '0') {
-        $manual = Read-Host "Paste the full path to GTA5.exe"
-        if (Test-Path $manual) {
+        $manual = Read-Host "Paste the GTA V folder, or the full path to GTA5.exe"
+        $manual = $manual.Trim('"')
+        if (Test-Path $manual -PathType Leaf) {
             $Settings.GamePath = $manual
+        } elseif (Test-Path $manual -PathType Container) {
+            $exePath = Join-Path $manual 'GTA5.exe'
+            if (Test-Path $exePath) {
+                $Settings.GamePath = $exePath
+            } else {
+                Write-Host "No GTA5.exe found inside $manual" -ForegroundColor Red
+            }
         } else {
             Write-Host "That path doesn't exist." -ForegroundColor Red
         }
@@ -73,12 +81,14 @@ function Require-GamePath {
 
 function Get-GameDir {
     param($Settings)
+    if (-not $Settings.GamePath) { return $null }
     Split-Path -Parent $Settings.GamePath
 }
 
 function Test-ReShadeInstalled {
     param($Settings)
     $dir = Get-GameDir $Settings
+    if (-not $dir) { return $false }
     $dlls = @('dxgi.dll', 'd3d11.dll', 'd3d9.dll') | ForEach-Object { Join-Path $dir $_ } | Where-Object { Test-Path $_ }
     $ini = Join-Path $dir 'ReShade.ini'
     return (@($dlls).Count -gt 0 -and (Test-Path $ini))
